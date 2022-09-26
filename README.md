@@ -5,7 +5,7 @@ serveur de la messagerie
 # id 0: 
 permet d'ajouter des utilisateurs
 http requête (json):
-{
+{<ln
   "id":0,
   "login":/*identifiant */,
   "password":/*mot de passe*/,
