@@ -126,12 +126,13 @@ app.post('/',(req, res) => {
             res.json({verif:verif(2,req.body.login,req.body.password)});
         break;
         case 2:
-            if(verif(2,req.body.login,req.body.password)!=false){
+            tempLogin=verif(2,req.body.login,req.body.password);
+            if(tempLogin!=false){
                 let Ttag=0;
                 do{
                     Ttag=Math.floor(Math.random()*10000);
                 }while(verif(0,Ttag,"")==true);
-                let tempConversation =new conversationD(req.body.creatorTag,req.body.name,Ttag);
+                let tempConversation =new conversationD(tempLogin.tagU,req.body.name,Ttag);
                 conversation.push(tempConversation);
                 let tI=verif(4,Ttag,"");
                 for(let i=0;i<req.body.member.length;i++){
