@@ -104,6 +104,7 @@ app.post('/',(req, res) => {
     message=array[0];
     let returned=[];
     let oldConv;
+    let tempLogin;
     switch(req.body.id){
         case 0:
             if(verif(1,req.body.login,"")==false){
@@ -146,11 +147,12 @@ app.post('/',(req, res) => {
             }
         break;
         case 3:
-            if(verif(2,req.body.login,req.body.password)!=false){
+            tempLogin=verif(2,req.body.login,req.body.password)
+            if(tempLogin!=false){
                 tI=verif(4,req.body.tagC,"");
                 if(tI!=false){
-                    if(verif(5,req.body.tag,tI)!=false){
-                        let tempMessage=new messageD(req.body.tag,req.body.data,req.body.tagC)
+                    if(verif(5,tempLogin.tagU,tI)!=false){
+                        let tempMessage=new messageD(tempLogin.tagU,req.body.data,req.body.tagC)
                         message.push(tempMessage);
                         fs.appendFile(messageFile,"\n"+JSON.stringify(tempMessage), (err) => {if (err) {console.log(err);}});
                         res.json({return:"ok message sent"})
@@ -169,9 +171,10 @@ app.post('/',(req, res) => {
         break;
         case 4:
             let returnedC;
-            if(verif(2,req.body.login,req.body.password)!=false){
+            tempLogin=(2,req.body.login,req.body.password);
+            if(tempLogin!=false){
                 for(let i=0;i<conversation.length;i++){
-                    if(verif(5,req.body.tag,i)==true){
+                    if(verif(5,tempLogin.tag,i)==true){
                         returnedC=conversation[i];
                         for(let a=0;a<returnedC.member.length;a++){
                             let TempName=verif(0,returnedC.member[a].tag,"");
@@ -193,11 +196,11 @@ app.post('/',(req, res) => {
         break;
         case 5:
             returned=[];
-            let Ttag=verif(2,req.body.login,req.body.password);
-            if(Ttag!=false){
+            tempLogin=verif(2,req.body.login,req.body.password);
+            if(tempLogin!=false){
                 let tI=verif(4,req.body.tagC,);
                 if(tI!=false){
-                    if(verif(5,Ttag.tagU,tI)){
+                    if(verif(5,tempLogin.tagU,tI)!=false){
                         res.json({return:verif(6,req.body.tagC,"")});
                     }
                     else{
@@ -214,10 +217,11 @@ app.post('/',(req, res) => {
             }
         break;
         case 6:
-            if(verif(2,req.body.login,req.body.password)!=false){
+              tempLogin=verif(2,req.body.login,req.body.password)
+            if(tempLogin!=false){
                 tI=verif(4,req.body.tagC,"");
                 if(tI!=false){
-                    if(verif(5,req.body.tag,tI)==true){
+                    if(verif(5,tempLogin.tagU,tI)==true){
                         if(verif(5,req.body.tagU,tI)==false){
                             oldConv=JSON.stringify(conversation[tI]);
                             if(verif(0,req.body.tagU,"")!=false){
@@ -249,10 +253,11 @@ app.post('/',(req, res) => {
             }
         break;
         case 7:
-            if(verif(2,req.body.login,req.body.password).tagU==req.body.tag){
+              tempLogin=verif(2,req.body.login,req.body.password);
+            if(tempLogin!=false){
                 tI=verif(4,req.body.tagC,"");
                 if(tI!=false){
-                    if(verif(5,req.body.tag,tI)==true){
+                    if(verif(5,tempLogin.tagU,tI)==true){
                         oldConv=JSON.stringify(conversation[tI]);   
                         conversation[tI].member.splice(conversation[tI].member.indexOf({tag:req.body.tag,name:""}),1);
                         var data = fs.readFileSync(conversationFile, 'utf-8');
