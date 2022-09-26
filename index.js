@@ -130,7 +130,7 @@ app.post('/',(req, res) => {
                 do{
                     Ttag=Math.floor(Math.random()*10000);
                 }while(verif(0,Ttag,"")==true);
-                let tempConversation =new conversationD(req.body.creator,req.body.name,Ttag);
+                let tempConversation =new conversationD(req.body.creatorTag,req.body.name,Ttag);
                 conversation.push(tempConversation);
                 let tI=verif(4,Ttag,"");
                 for(let i=0;i<req.body.member.length;i++){
