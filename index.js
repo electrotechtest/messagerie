@@ -123,7 +123,7 @@ app.post('/',(req, res) => {
             
         break;
         case 1:
-            res.json({verif:verif(2,req.body.login,req.body.password)});
+            res.json({rtn:verif(2,req.body.login,req.body.password)});
         break;
         case 2:
             tempLogin=verif(2,req.body.login,req.body.password);
