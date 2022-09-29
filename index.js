@@ -104,6 +104,7 @@ app.post('/',(req, res) => {
     message=array[0];
     let returned=[];
     let oldConv;
+    let tempLogin;
     switch(req.body.id){
         case 0:
             if(verif(1,req.body.login,"")==false){
@@ -113,11 +114,11 @@ app.post('/',(req, res) => {
                 }while(verif(0,Ttag,"")==true);
                 let tempUsers=new userD(Ttag,req.body.name,req.body.login,req.body.password);
                 users.push(tempUsers);
-                res.json({return:tempUsers});
+                res.json({rtn:tempUsers});
                 fs.appendFile(usersFile,"\n"+JSON.stringify(tempUsers), (err) => {if (err) {console.log(err);}});
             }
             else{
-                res.json({return:"this login is already used"});
+                res.json({rtn:"this login is already used"});
             }
             
         break;
@@ -125,12 +126,13 @@ app.post('/',(req, res) => {
             res.json({verif:verif(2,req.body.login,req.body.password)});
         break;
         case 2:
-            if(verif(2,req.body.login,req.body.password)!=false){
+            tempLogin=verif(2,req.body.login,req.body.password);
+            if(tempLogin!=false){
                 let Ttag=0;
                 do{
                     Ttag=Math.floor(Math.random()*10000);
                 }while(verif(0,Ttag,"")==true);
-                let tempConversation =new conversationD(req.body.creator,req.body.name,Ttag);
+                let tempConversation =new conversationD(tempLogin.tagU,req.body.name,Ttag);
                 conversation.push(tempConversation);
                 let tI=verif(4,Ttag,"");
                 for(let i=0;i<req.body.member.length;i++){
@@ -138,40 +140,42 @@ app.post('/',(req, res) => {
                         conversation[tI].member.push({tag:req.body.member[i].tag,name:""});
                     }
                 }
-                res.json({return:conversation[tI]});
+                res.json({rtn:conversation[tI]});
                 fs.appendFile(conversationFile,"\n"+JSON.stringify(conversation[tI]), (err) => {if (err) {console.log(err);}});
             }
             else{
-                res.json({return:"error login"});
+                res.json({rtn:"error login"});
             }
         break;
         case 3:
-            if(verif(2,req.body.login,req.body.password)!=false){
+            tempLogin=verif(2,req.body.login,req.body.password)
+            if(tempLogin!=false){
                 tI=verif(4,req.body.tagC,"");
                 if(tI!=false){
-                    if(verif(5,req.body.tag,tI)!=false){
-                        let tempMessage=new messageD(req.body.tag,req.body.data,req.body.tagC)
+                    if(verif(5,tempLogin.tagU,tI)!=false){
+                        let tempMessage=new messageD(tempLogin.tagU,req.body.data,req.body.tagC)
                         message.push(tempMessage);
                         fs.appendFile(messageFile,"\n"+JSON.stringify(tempMessage), (err) => {if (err) {console.log(err);}});
-                        res.json({return:"ok message sent"})
+                        res.json({rtn:"ok message sent"})
                     }
                     else{
-                        res.json({return:"this users is not a member"});
+                        res.json({rtn:"this users is not a member"});
                     }
                 }
                 else{
-                    res.json({return:"this channel doesn't exist"});
+                    res.json({rtn:"this channel doesn't exist"});
                 }
             }
             else{
-                res.json({return:"error login"});
+                res.json({rtn:"error login"});
             }
         break;
-        case 4:
+        case 4: 
             let returnedC;
-            if(verif(2,req.body.login,req.body.password)!=false){
+            tempLogin=(2,req.body.login,req.body.password);
+            if(tempLogin!=false){
                 for(let i=0;i<conversation.length;i++){
-                    if(verif(5,req.body.tag,i)==true){
+                    if(verif(5,tempLogin.tag,i)==true){
                         returnedC=conversation[i];
                         for(let a=0;a<returnedC.member.length;a++){
                             let TempName=verif(0,returnedC.member[a].tag,"");
@@ -182,42 +186,43 @@ app.post('/',(req, res) => {
                         returned.push(returnedC);
                     }
                     else{
-                        res.json({return:"this users is not a member"});
+                        res.json({rtn:"this users is not a member"});
                     }
                 }
-            res.json({return:returned});
+            res.json({rtn:returned});
             }
             else{
-                res.json({return:"error login"});
+                res.json({rtn:"error login"});
             }
         break;
         case 5:
             returned=[];
-            let Ttag=verif(2,req.body.login,req.body.password);
-            if(Ttag!=false){
+            tempLogin=verif(2,req.body.login,req.body.password);
+            if(tempLogin!=false){
                 let tI=verif(4,req.body.tagC,);
                 if(tI!=false){
-                    if(verif(5,Ttag.tagU,tI)){
-                        res.json({return:verif(6,req.body.tagC,"")});
+                    if(verif(5,tempLogin.tagU,tI)!=false){
+                        res.json({rtn:verif(6,req.body.tagC,"")});
                     }
                     else{
-                        res.json({return:"this users is not a member"});
+                        res.json({rtn:"this users is not a member"});
                     }
                        
                 }
                 else{
-                    res.json({return:"this channel doesn't exist"});
+                    res.json({rtn:"this channel doesn't exist"});
                 }
             }
             else{
-                res.json({return:"error login"});
+                res.json({rtn:"error login"});
             }
         break;
         case 6:
-            if(verif(2,req.body.login,req.body.password)!=false){
+            tempLogin=verif(2,req.body.login,req.body.password)
+            if(tempLogin!=false){
                 tI=verif(4,req.body.tagC,"");
                 if(tI!=false){
-                    if(verif(5,req.body.tag,tI)==true){
+                    if(verif(5,tempLogin.tagU,tI)==true){
                         if(verif(5,req.body.tagU,tI)==false){
                             oldConv=JSON.stringify(conversation[tI]);
                             if(verif(0,req.body.tagU,"")!=false){
@@ -226,56 +231,57 @@ app.post('/',(req, res) => {
                                 var newConv = data.replace(oldConv, JSON.stringify(conversation[tI]));
                                 console.log(conversation[tI]);
                                 fs.writeFileSync(conversationFile, newConv, 'utf-8');
-                                res.json({return:"user was added"});
+                                res.json({rtn:"user was added"});
                             }
                             else{
-                                res.json({return:"this user does not exist"});
+                                res.json({rtn:"this user does not exist"});
                             }
                         }
                         else{
-                            res.json({return:"this user was already added"});
+                            res.json({rtn:"this user was already added"});
                         }
                     }
                     else{
-                        res.json({return:"this users is not a member"});
+                        res.json({rtn:"this users is not a member"});
                     }
                 }
                 else{
-                    res.json({return:"this channel doesn't exist"});
+                    res.json({rtn:"this channel doesn't exist"});
                 }
             }
             else{
-                res.json({return:"error login"});
+                res.json({rtn:"error login"});
             }
         break;
         case 7:
-            if(verif(2,req.body.login,req.body.password).tagU==req.body.tag){
+            tempLogin=verif(2,req.body.login,req.body.password);
+            if(tempLogin!=false){
                 tI=verif(4,req.body.tagC,"");
                 if(tI!=false){
-                    if(verif(5,req.body.tag,tI)==true){
+                    if(verif(5,tempLogin.tagU,tI)==true){
                         oldConv=JSON.stringify(conversation[tI]);   
                         conversation[tI].member.splice(conversation[tI].member.indexOf({tag:req.body.tag,name:""}),1);
                         var data = fs.readFileSync(conversationFile, 'utf-8');
                         console.log(conversation[tI]);
                         var newConv = data.replace(oldConv, JSON.stringify(conversation[tI]));
                         fs.writeFileSync(conversationFile, newConv, 'utf-8');
-                        res.json({return:"user was removed"});
+                        res.json({rtn:"user was removed"});
                     }
                     else{
-                        res.json({return:"this users is not a member"});
+                        res.json({rtn:"this users is not a member"});
                     }
                 }
                 else{
-                    res.json({return:"this channel doesn't exist"});
+                    res.json({rtn:"this channel doesn't exist"});
                 }
                 
             }
             else{
-                res.json({return:"error login"});
+                res.json({rtn:"error login"});
             }
         break;
         default:
-            res.json({return:"unknow id"});
+            res.json({rtn:"unknow id"});
         break;
     }
     res.status("200");
