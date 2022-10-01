@@ -185,9 +185,6 @@ app.post('/',(req, res) => {
                         }
                         returned.push(returnedC);
                     }
-                    else{
-                        res.json({rtn:"this users is not a member"});
-                    }
                 }
             res.json({rtn:returned});
             }
