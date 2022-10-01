@@ -172,7 +172,7 @@ app.post('/',(req, res) => {
         break;
         case 4: 
             let returnedC;
-            tempLogin=(2,req.body.login,req.body.password);
+            tempLogin=verif(2,req.body.login,req.body.password);
             if(tempLogin!=false){
                 for(let i=0;i<conversation.length;i++){
                     if(verif(5,tempLogin.tag,i)==true){
