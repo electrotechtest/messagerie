@@ -105,6 +105,7 @@ app.post('/',(req, res) => {
     let returned=[];
     let oldConv;
     let tempLogin;
+    let returnedC;
     switch(req.body.id){
         case 0:
             if(verif(1,req.body.login,"")==false){
@@ -140,7 +141,14 @@ app.post('/',(req, res) => {
                         conversation[tI].member.push({tag:req.body.member[i].tag,name:""});
                     }
                 }
-                res.json({rtn:conversation[tI]});
+                returnedC=conversation[tI];
+                for(let a=0;a<returnedC.member.length;a++){
+                    let TempName=verif(0,returnedC.member[a].tag,"");
+                    if(TempName!=false){
+                      returnedC.member[a].name=TempName;
+                    }
+                }
+                res.json({rtn:returnedC});
                 fs.appendFile(conversationFile,"\n"+JSON.stringify(conversation[tI]), (err) => {if (err) {console.log(err);}});
             }
             else{
