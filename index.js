@@ -63,7 +63,17 @@ function verif(id,Value1,Value2){
                 }
             }
             return returnedData;
-        //break;
+        break;
+          case 7:
+            let returnedData=[];
+            console.log(message);
+            for(let i=0;i<message.length;i++){
+                if(message[i].tagC==Value1 && message[i].date.getTime()>value2.getTime()){
+                    returnedData.push(message[i]);
+                }
+            }
+            return returnedData;
+        break;
      }
      return false;
  }
@@ -285,6 +295,29 @@ app.post('/',(req, res) => {
                 res.json({rtn:"error login"});
             }
         break;
+         case 8:
+            returned=[];
+            tempLogin=verif(2,req.body.login,req.body.password);
+            if(tempLogin!=false){
+                let tI=verif(4,req.body.tagC,);
+                if(tI!=false){
+                    if(verif(5,tempLogin.tagU,tI)!=false){
+                        res.json({rtn:verif(7,req.body.tagC,req.body.date)});
+                    }
+                    else{
+                        res.json({rtn:"this users is not a member"});
+                    }
+                       
+                }
+                else{
+                    res.json({rtn:"this channel doesn't exist"});
+                }
+            }
+            else{
+                res.json({rtn:"error login"});
+            }
+        break;
+              
         default:
             res.json({rtn:"unknow id"});
         break;
