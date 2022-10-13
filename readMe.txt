@@ -82,3 +82,15 @@ http requête (json):
   "password":/*mot de passe*/,
   "tagC":/*tag de la conv*/
 }
+reutrne conv quitter
+#id 8:
+permet de charger les dernier message d'une conv
+http requête (json):
+{
+  "id":5,
+  "login":/*identifiant */,
+  "password":/*mot de passe*/,
+  "tagC":/*tag de la conv*/,
+  "date":/*date du dernier message*/
+}
+returne tt les dernier message
