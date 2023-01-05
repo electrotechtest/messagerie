@@ -103,6 +103,7 @@ class userD{
         this.name=name;
         this.login=login;
         this.password=password;
+        this.contact=[];
     }
 }
 //server
