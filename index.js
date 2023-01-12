@@ -65,7 +65,7 @@ function verif(id,Value1,Value2){
             return returnedData;
         break;
           case 7:
-            let returnedData=[];
+            returnedData=[];
             console.log(message);
             for(let i=0;i<message.length;i++){
                 if(message[i].tagC==Value1 && message[i].date.getTime()>value2.getTime()){
